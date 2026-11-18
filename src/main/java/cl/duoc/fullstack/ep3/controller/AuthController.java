@@ -7,6 +7,9 @@ import cl.duoc.fullstack.ep3.exception.RecursoNoEncontradoException;
 import cl.duoc.fullstack.ep3.model.Usuario;
 import cl.duoc.fullstack.ep3.repository.UsuarioRepository;
 import cl.duoc.fullstack.ep3.security.JwtService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/auth")
+@Tag(name = "Autenticación")
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
@@ -35,6 +39,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
+    @Operation(summary = "Iniciar sesión y obtener un JWT")
     public LoginResponse login(@Valid @RequestBody LoginRequest solicitud) {
         Authentication autenticacion = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(solicitud.username(), solicitud.password()));
@@ -57,6 +62,8 @@ public class AuthController {
     }
 
     @GetMapping("/me")
+    @Operation(summary = "Consultar el usuario autenticado")
+    @SecurityRequirement(name = "bearerAuth")
     public UsuarioResponse me(Authentication autenticacion) {
         Usuario usuario = usuarioRepository.findByUsername(autenticacion.getName())
                 .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));

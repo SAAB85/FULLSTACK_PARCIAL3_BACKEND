@@ -39,6 +39,14 @@ los usuarios y productos de demostración.
 
 ## Endpoints
 
+### Probar en Swagger UI
+
+1. Ejecuta `POST /api/auth/login` con un usuario de prueba y copia el campo `token`.
+2. Pulsa **Authorize** y pega el token **sin** el prefijo `Bearer`.
+3. Con el rol ADMIN puedes probar las cinco operaciones de **Productos** con **Try it out**.
+   Para crear un producto envía `codigo`, `nombre`, `categoria`, `precio` y `stock`;
+   `descripcion` es opcional y el servidor genera el ID.
+
 | Método | Ruta | Acceso |
 | --- | --- | --- |
 | POST | `/api/auth/login` | Público |
