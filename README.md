@@ -143,7 +143,7 @@ curl -s -X POST http://localhost:8080/api/v1/boletas \
 | --- | --- | --- |
 | `JWT_SECRET` | Clave de firma (mínimo 32 caracteres) | Clave de desarrollo incluida |
 | `JWT_EXPIRACION_MS` | Vigencia del token | `7200000` (2 horas) |
-| `CORS_ORIGENES` | Orígenes permitidos | `http://localhost:5173,http://localhost:4173` |
+| `CORS_ORIGENES` | Orígenes permitidos | `http://localhost:5173,http://localhost:4173,http://127.0.0.1:5173,http://127.0.0.1:4173` |
 
 > En producción define `JWT_SECRET` con una clave propia. La clave por defecto es solo para desarrollo.
 
