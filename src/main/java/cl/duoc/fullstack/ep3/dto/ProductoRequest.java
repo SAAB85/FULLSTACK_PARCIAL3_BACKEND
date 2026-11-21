@@ -4,6 +4,7 @@ import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
 import java.math.BigDecimal;
@@ -20,9 +21,9 @@ public record ProductoRequest(
         @Size(max = 500, message = "La descripción admite hasta 500 caracteres")
         String descripcion,
 
-        @NotBlank(message = "La categoría es obligatoria")
-        @Size(max = 60, message = "La categoría admite hasta 60 caracteres")
-        String categoria,
+        @NotNull(message = "La categoría es obligatoria")
+        @Positive(message = "La categoría debe tener un ID válido")
+        Long categoriaId,
 
         @NotNull(message = "El precio es obligatorio")
         @DecimalMin(value = "0.0", message = "El precio no puede ser negativo")

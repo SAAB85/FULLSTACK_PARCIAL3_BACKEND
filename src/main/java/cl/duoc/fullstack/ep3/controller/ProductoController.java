@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/productos")
+@RequestMapping("/api/v1/productos")
 @Tag(name = "Productos", description = "Operaciones CRUD sobre el catálogo")
 @SecurityRequirement(name = "bearerAuth")
 public class ProductoController {
@@ -46,16 +46,16 @@ public class ProductoController {
     }
 
     @PostMapping
-    @Operation(summary = "Crear un producto", description = "Disponible para ADMIN y VENDEDOR.")
+    @Operation(summary = "Crear un producto", description = "Disponible para ADMIN.")
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasAnyRole('ADMIN', 'VENDEDOR')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ProductoResponse crear(@Valid @RequestBody ProductoRequest solicitud) {
         return productoService.crear(solicitud);
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "Actualizar un producto", description = "Disponible para ADMIN y VENDEDOR.")
-    @PreAuthorize("hasAnyRole('ADMIN', 'VENDEDOR')")
+    @Operation(summary = "Actualizar un producto", description = "Disponible para ADMIN.")
+    @PreAuthorize("hasRole('ADMIN')")
     public ProductoResponse actualizar(@PathVariable Long id,
                                        @Valid @RequestBody ProductoRequest solicitud) {
         return productoService.actualizar(id, solicitud);

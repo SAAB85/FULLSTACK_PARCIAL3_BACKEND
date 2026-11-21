@@ -9,6 +9,7 @@ public record ProductoResponse(
         String codigo,
         String nombre,
         String descripcion,
+        Long categoriaId,
         String categoria,
         BigDecimal precio,
         Integer stock) {
@@ -19,7 +20,8 @@ public record ProductoResponse(
                 producto.getCodigo(),
                 producto.getNombre(),
                 producto.getDescripcion(),
-                producto.getCategoria(),
+                producto.getCategoria().getId(),
+                producto.getCategoria().getNombre(),
                 producto.getPrecio(),
                 producto.getStock());
     }

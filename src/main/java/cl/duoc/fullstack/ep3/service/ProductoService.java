@@ -3,7 +3,10 @@ package cl.duoc.fullstack.ep3.service;
 import cl.duoc.fullstack.ep3.dto.ProductoRequest;
 import cl.duoc.fullstack.ep3.dto.ProductoResponse;
 import cl.duoc.fullstack.ep3.exception.RecursoNoEncontradoException;
+import cl.duoc.fullstack.ep3.model.Categoria;
 import cl.duoc.fullstack.ep3.model.Producto;
+import cl.duoc.fullstack.ep3.repository.CategoriaRepository;
+import cl.duoc.fullstack.ep3.repository.DetalleBoletaRepository;
 import cl.duoc.fullstack.ep3.repository.ProductoRepository;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -15,9 +18,15 @@ import java.util.List;
 public class ProductoService {
 
     private final ProductoRepository productoRepository;
+    private final CategoriaRepository categoriaRepository;
+    private final DetalleBoletaRepository detalleBoletaRepository;
 
-    public ProductoService(ProductoRepository productoRepository) {
+    public ProductoService(ProductoRepository productoRepository,
+                           CategoriaRepository categoriaRepository,
+                           DetalleBoletaRepository detalleBoletaRepository) {
         this.productoRepository = productoRepository;
+        this.categoriaRepository = categoriaRepository;
+        this.detalleBoletaRepository = detalleBoletaRepository;
     }
 
     @Transactional(readOnly = true)
@@ -58,7 +67,14 @@ public class ProductoService {
 
     @Transactional
     public void eliminar(Long id) {
-        productoRepository.delete(buscar(id));
+        Producto producto = buscar(id);
+
+        if (detalleBoletaRepository.existsByProductoId(id)) {
+            throw new IllegalArgumentException(
+                    "No se puede eliminar el producto porque tiene boletas asociadas");
+        }
+
+        productoRepository.delete(producto);
     }
 
     private Producto buscar(Long id) {
@@ -70,8 +86,14 @@ public class ProductoService {
         producto.setCodigo(solicitud.codigo());
         producto.setNombre(solicitud.nombre());
         producto.setDescripcion(solicitud.descripcion());
-        producto.setCategoria(solicitud.categoria());
+        producto.setCategoria(resolverCategoria(solicitud.categoriaId()));
         producto.setPrecio(solicitud.precio());
         producto.setStock(solicitud.stock());
+    }
+
+    private Categoria resolverCategoria(Long categoriaId) {
+        return categoriaRepository.findById(categoriaId)
+                .orElseThrow(() -> new RecursoNoEncontradoException(
+                        "No existe la categoría con id " + categoriaId));
     }
 }
