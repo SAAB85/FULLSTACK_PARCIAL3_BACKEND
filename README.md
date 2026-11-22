@@ -165,6 +165,10 @@ Las 12 pruebas cubren:
 - Visibilidad de boletas: VENDEDOR ve todas, CLIENTE solo las propias.
 - Cambio de estado y reposición de stock al anular.
 
+## Documentación
+
+La documentación completa de la EP3 (ERS, Anexos 2, 3 y 4 y presentación) está en el repositorio del frontend: [docs/](https://github.com/SAAB85/FULLSTACK_PARCIAL3_FRONTEND/tree/main/docs).
+
 ## Estructura
 
 ```
